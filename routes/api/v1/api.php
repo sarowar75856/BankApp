@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,12 +19,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'account', 'as' => 'account.', 'controller' => AccountController::class], function () {
+Route::post("login",[UserController::class,'index']);
 
-    Route::get('/', 'index');
-    Route::post('/create', 'create');
-    Route::post('/balance', 'balance');
-    Route::post('/balance/transfer', 'transferBalance');
-    Route::post('/history', 'historyShow');
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    Route::group(['prefix' => 'account', 'as' => 'account.', 'controller' => AccountController::class], function () {
+
+        Route::get('/', 'index');
+        Route::post('/create', 'create');
+        Route::post('/balance', 'balance');
+        Route::post('/balance/transfer', 'transferBalance');
+        Route::post('/history', 'historyShow');
+
+    });
 
 });
